@@ -46,14 +46,39 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
+        title: Stack(
+          children: [
+        Text(
+          widget.title,
+           style: TextStyle(
+          fontSize: 23,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'Righteous',
+          foreground: Paint()
+            ..style = PaintingStyle.stroke
+            ..color = Colors.black
+            ..strokeWidth = 4,
+
+               ),
+        
+        ),
+      
+    
+        Text(      
         widget.title,
         style: TextStyle(
           fontSize: 23,
           fontWeight: FontWeight.bold,
-
-            ),
+          fontFamily: 'Righteous',
+          color: Colors.white,
+          
+              
+          ),
+        
         ),
+      ],
+    ),
+      
         flexibleSpace: Image.asset('assets/gta6_theme.jpg',
         width: double.infinity,
         fit: BoxFit.cover,
