@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('dd.MM.yyyy').format(now);
-    
+
     return MaterialApp(
 
       title: 'Flutter Demo',
@@ -45,10 +45,21 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       appBar: AppBar(
-      
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-       
-        title: Text(widget.title),
+        centerTitle: true,
+        title: Text(
+        widget.title,
+        style: TextStyle(
+          fontSize: 23,
+          fontWeight: FontWeight.bold,
+
+            ),
+        ),
+        flexibleSpace: Image.asset('assets/gta6_theme.jpg',
+        width: double.infinity,
+        fit: BoxFit.cover,
+        
+        ),
+        
       ),
       body: Center(
      
