@@ -51,6 +51,24 @@ class _MyHomePageState extends State<MyHomePage> {
      String monthTitle =
       DateFormat('MMMM yyyy', 'de_DE').format(displayedMonth);
 
+    DateTime firstDay = DateTime(
+    displayedMonth.year,
+    displayedMonth.month,
+    1,
+  );
+  int firstWeekday = firstDay.weekday;
+
+    DateTime lastDay = DateTime(
+    displayedMonth.year,
+    displayedMonth.month + 1,
+    0,
+  );
+  int daysInMonth = lastDay.day;
+
+  int emptyFields = firstWeekday - 1;
+
+  
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -166,7 +184,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
             SizedBox(
               height: 700,
-            ),
+              child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 7,
+              ),
+              itemBuilder: (context, index) {
+
+            },
+          ),
+        ),
           
            Stack(
           children: [
