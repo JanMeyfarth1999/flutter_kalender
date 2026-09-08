@@ -133,48 +133,90 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: .center,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
+              
+              children:[
+                Expanded(
+                child: Center(
+                child:
                 Text('Mo',
                 style: TextStyle(
                   color: Colors.white,
                    fontWeight: FontWeight.bold,
+                   fontSize: 20,
                 ),
                 ),
+                ),
+                ),
+                 Expanded(
+                child: Center(
+                child:
                 Text('Di',
-                 style: TextStyle(
+                style: TextStyle(
                   color: Colors.white,
                    fontWeight: FontWeight.bold,
+                   fontSize: 20,
                 ),
                 ),
+                ),
+                ),
+                 Expanded(
+                child: Center(
+                child:
                 Text('Mi',
-                 style: TextStyle(
+                style: TextStyle(
                   color: Colors.white,
-                   fontWeight: FontWeight.bold,                  
+                   fontWeight: FontWeight.bold,
+                   fontSize: 20,
                 ),
                 ),
+                ),
+                ),
+                 Expanded(
+                child: Center(
+                child:
                 Text('Do',
-                 style: TextStyle(
+                style: TextStyle(
                   color: Colors.white,
                    fontWeight: FontWeight.bold,
+                   fontSize: 20,
                 ),
                 ),
+                ),
+                ),
+                 Expanded(
+                child: Center(
+                child:
                 Text('Fr',
-                 style: TextStyle(
+                style: TextStyle(
                   color: Colors.white,
                    fontWeight: FontWeight.bold,
+                   fontSize: 20,
                 ),
                 ),
+                ),
+                ),
+                Expanded(
+                child: Center(
+                child:
                 Text('Sa',
-                 style: TextStyle(
+                style: TextStyle(
                   color: Colors.white,
                    fontWeight: FontWeight.bold,
+                   fontSize: 20,
                 ),
                 ),
+                ),
+                ),
+                 Expanded(
+                child: Center(
+                child:
                 Text('So',
-                 style: TextStyle(
+                style: TextStyle(
                   color: Colors.white,
                    fontWeight: FontWeight.bold,
+                   fontSize: 20,
+                ),
+                ),
                 ),
                 ),
               
@@ -185,10 +227,27 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(
               height: 700,
               child: GridView.builder(
+                itemCount: emptyFields + daysInMonth,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 7,
+              childAspectRatio: 1.4,
               ),
               itemBuilder: (context, index) {
+                 if (index < emptyFields) {
+              return SizedBox();
+                }
+  
+ 
+              int day = index - emptyFields + 1;
+                return Center(
+                  child: Text(
+                  day.toString(),
+                  style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  ),
+                  ),
+              );
 
             },
           ),
