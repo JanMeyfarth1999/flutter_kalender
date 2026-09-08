@@ -44,28 +44,13 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   DateTime displayedMonth = DateTime.now();
+    final PageController pageController =
+      PageController(initialPage: 1000);
  
 
   @override
   Widget build(BuildContext context) {
-     String monthTitle =
-      DateFormat('MMMM yyyy', 'de_DE').format(displayedMonth);
-
-    DateTime firstDay = DateTime(
-    displayedMonth.year,
-    displayedMonth.month,
-    1,
-  );
-  int firstWeekday = firstDay.weekday;
-
-    DateTime lastDay = DateTime(
-    displayedMonth.year,
-    displayedMonth.month + 1,
-    0,
-  );
-  int daysInMonth = lastDay.day;
-
-  int emptyFields = firstWeekday - 1;
+   
 
   
 
@@ -126,13 +111,33 @@ class _MyHomePageState extends State<MyHomePage> {
     
 
 
-     
-        child: Column(
-          
+        child: PageView.builder(
+          controller: pageController,
+          itemBuilder: (context, index) {
+            int monthOffset = index - 1000;
+            DateTime pageMonth = DateTime(
+              displayedMonth.year,
+                displayedMonth.month + monthOffset,
+            );
+            String pageMonthTitle = DateFormat('MMMM yyyy', 'de_DE').format(pageMonth);
+            DateTime firstDay = DateTime(
+              pageMonth.year,
+              pageMonth.month,
+              1,
+            );
+            int firstWeekday = firstDay.weekday;
+            DateTime lastDay = DateTime(
+              pageMonth.year,
+              pageMonth.month + 1,
+              0,
+            );
+            int daysInMonth = lastDay.day;
+            int emptyFields = firstWeekday - 1;
 
-          mainAxisAlignment: .center,
-          children: [
-            Row(
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                 Row(
               
               children:[
                 Expanded(
@@ -223,8 +228,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
 
             ),
-
-            SizedBox(
+              
+                    SizedBox(
               height: 700,
               child: GridView.builder(
                 itemCount: emptyFields + daysInMonth,
@@ -252,11 +257,10 @@ class _MyHomePageState extends State<MyHomePage> {
             },
           ),
         ),
-          
-           Stack(
+                   Stack(
           children: [
             Text(
-              monthTitle,
+              pageMonthTitle,
                 style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -275,26 +279,30 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
             Text(
-              monthTitle,
+              pageMonthTitle,
                 style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Righteous',
                 color: Colors.white,
-                   
                 ),
-
-
-             ),
-         
+            ),
+        
           ],
+          ),
+              ],
+              
+            );
+            
+          
+          },
+        
         ),
-          ],
       ),
-      ),
-   
     );
-    
-    
   }
 }
+  
+          
+      
+      
