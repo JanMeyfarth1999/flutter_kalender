@@ -48,9 +48,15 @@ class _MyHomePageState extends State<MyHomePage> {
       PageController(initialPage: 1000);
 
   Map<DateTime, String> getHolidays(int year) {
+    DateTime easterSunday = getEasterSunday(year);
     return{
       DateTime(year, 1, 1): 'Neujahr',
+      easterSunday.subtract(Duration(days: 2)): 'Karfreitag',
+      easterSunday.add(Duration(days: 1)): 'Ostermontag',
       DateTime(year, 5, 1): 'Tag der Arbeit',
+      easterSunday.add(Duration(days: 39)): 'Christi Himmelfahrt',
+      easterSunday.add(Duration(days: 50)): 'Pfingstmontag',
+      easterSunday.add(Duration(days: 60)): 'Frohenleichnam',
       DateTime(year, 10, 3): 'Tag der Deutschen Einheit',
       DateTime(year, 12, 25): '1. Weihnachtstag',
       DateTime(year, 12, 26): '2. Weihnachtstag',
@@ -61,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int a = year % 19;
   int b = year ~/ 100;
   int c = year % 100;
-  int d = b ~/ 4;
+  int d = b ~/ 4; 
   int e = b % 4;
   int f = (b + 8) ~/ 25;
   int g = (b - f + 1) ~/ 3;
@@ -71,9 +77,12 @@ class _MyHomePageState extends State<MyHomePage> {
   int l = (32 + 2 * e + 2 * i - h - k) % 7;
   int m = (a + 11 * h + 22 * l) ~/ 451;
 
+  int month = (h + l - 7 * m + 114) ~/ 31;
+  int day = ((h + l - 7 * m + 114) % 31) + 1;
 
+  return DateTime(year, month, day);
 
- }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -146,6 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
               displayedMonth.year,
                 displayedMonth.month + monthOffset,
             );
+            Map<DateTime, String> holidays = getHolidays(pageMonth.year);
             String pageMonthTitle = DateFormat('MMMM yyyy', 'de_DE').format(pageMonth);
             DateTime firstDay = DateTime(
               pageMonth.year,
@@ -271,11 +281,17 @@ class _MyHomePageState extends State<MyHomePage> {
   
  
               int day = index - emptyFields + 1;
+              DateTime currentDate = DateTime(
+              pageMonth.year,
+              pageMonth.month,
+              day,
+              );
+              bool isHoliday = holidays.containsKey(currentDate);
                 return Center(
                   child: Text(
                   day.toString(),
                   style: TextStyle(
-                  color: Colors.white,
+                  color: isHoliday ? Colors.yellow : Colors.white,
                   fontWeight: FontWeight.bold,
                   ),
                   ),
