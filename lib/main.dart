@@ -287,19 +287,84 @@ class _MyHomePageState extends State<MyHomePage> {
               day,
               );
               bool isHoliday = holidays.containsKey(currentDate);
-                return Center(
-                  child: Text(
+              DateTime today = DateTime.now();
+              bool isToday =
+                currentDate.year == today.year &&
+                currentDate.month == today.month &&
+                currentDate.day == today.day;
+              return Center(
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Container(
+                    width: 38,
+                    height: 38,
+                    alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: isToday
+                            ? Border.all(
+                              color: Colors.red,
+                              width: 2,
+
+                            )
+                            :null
+                    ),
+                   child: Text(
                   day.toString(),
                   style: TextStyle(
                   color: isHoliday ? Colors.yellow : Colors.white,
                   fontWeight: FontWeight.bold,
                   ),
                   ),
-              );
+                 ),
 
-            },
-          ),
+                 if (isToday)
+                    Positioned(
+                      top: 0,
+                      child: Container(
+                        width: 2,
+                        height: 10,
+                        color: Colors.red,
+                      ),
+                   ),
+                   
+                  if (isToday)
+                    Positioned(
+                      bottom: 0,
+                      child: Container(
+                        width: 2,
+                        height: 10,
+                        color: Colors.red,
+                      ),
+                    ),
+
+                  if (isToday)
+                    Positioned(
+                      left: 0,
+                      child: Container(
+                        width: 10,
+                        height: 2,
+                        color: Colors.red,
+                      ),
+                    ),
+
+                  if (isToday)
+                    Positioned(
+                      right: 0,
+                      child: Container(
+                        width: 10,
+                        height: 2,
+                        color: Colors.red,
+                      ),
+                    ),
+
+                 ],
+              ),
+            );
+          },
         ),
+      ),
                    Stack(
           children: [
             Text(
