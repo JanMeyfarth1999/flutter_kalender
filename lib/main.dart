@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:http/http.dart' as http;
+import 'gta_countdown.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -129,10 +130,46 @@ class _MyHomePageState extends State<MyHomePage> {
               alignment: Alignment.centerRight,
             ),
           ),
+          child: Column(
+            children: [
+              const SizedBox(height: 275),
+
+              ListTile(
+                leading: const Icon(Icons.timer_outlined, color: Colors.white),
+                title: const Text(
+                  'GTA 6 Countdown',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const GtaCountdownPage(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.today, color: Colors.white),
+                title: const Text(
+                  'Aktueller Tag',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                onTap: () {},
+              ),
+            ],
+          ),
         ),
       ),
 
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         centerTitle: true,
         title: Stack(
           children: [
@@ -529,15 +566,16 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: Builder(
         builder: (context) {
-          return FloatingActionButton(
+          return IconButton(
             onPressed: () {
               Scaffold.of(context).openDrawer();
             },
-            child: const Icon(Icons.menu),
+            icon: const Icon(Icons.menu, color: Colors.black, size: 45),
           );
         },
       ),
-    ); // Scaffold
+    );
+    // Scaffold
   }
 
   @override
