@@ -61,6 +61,7 @@ flutter:
   assets:
     - assets/gta6_theme.png
     - assets/background.png
+    - assets/history_box.png
 
   fonts: 
     - family: Righteous
