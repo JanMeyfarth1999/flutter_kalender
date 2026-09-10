@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:http/http.dart' as http;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,13 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
   DateTime selectedDate = DateTime.now();
   int selectedEventIndex = 0;
 
-  final List<String> historicalEvents = [
-    'Ereignis 1',
-    'Ereignis 2',
-    'Ereignis 3',
-    'Ereignis 4',
-    'Ereignis 5',
-  ];
+  List<String> historicalEvents = ['Ereignisse werden geladen...'];
 
   final PageController pageController = PageController(initialPage: 1000);
 
@@ -86,9 +83,55 @@ class _MyHomePageState extends State<MyHomePage> {
     return DateTime(year, month, day);
   }
 
+  Future<void> loadHistoricalEvents(DateTime date) async {
+    String month = date.month.toString().padLeft(2, '0');
+    String day = date.day.toString().padLeft(2, '0');
+
+    final url = Uri.parse(
+      'https://de.wikipedia.org/api/rest_v1/feed/onthisday/events/$month/$day',
+    );
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      print('Wikipedia Daten erfolgreich geladen');
+      final data = jsonDecode(response.body);
+      final events = data['events'];
+
+      List<String> newEvents = [];
+      for (int i = 0; i < events.length && i < 5; i++) {
+        String text = events[i]['text'];
+        int year = events[i]['year'];
+
+        newEvents.add('$year - $text');
+      }
+      setState(() {
+        historicalEvents = newEvents;
+        selectedEventIndex = 0;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadHistoricalEvents(DateTime.now());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        width: MediaQuery.of(context).size.width * 0.60,
+        child: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/menu.png'),
+              fit: BoxFit.cover,
+              alignment: Alignment.centerRight,
+            ),
+          ),
+        ),
+      ),
+
       appBar: AppBar(
         centerTitle: true,
         title: Stack(
@@ -124,6 +167,7 @@ class _MyHomePageState extends State<MyHomePage> {
           fit: BoxFit.cover,
         ),
       ),
+
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -291,7 +335,9 @@ class _MyHomePageState extends State<MyHomePage> {
                               onTap: () {
                                 setState(() {
                                   selectedDate = currentDate;
+                                  selectedEventIndex = 0;
                                 });
+                                loadHistoricalEvents(currentDate);
                               },
                               child: Stack(
                                 alignment: Alignment.center,
@@ -412,11 +458,41 @@ class _MyHomePageState extends State<MyHomePage> {
                 alignment: Alignment.center,
                 children: [
                   Image.asset('assets/history_box.png'),
-                  Text(
-                    historicalEvents[selectedEventIndex],
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                  Positioned(
+                    left: 45,
+                    right: 70,
+                    top: 20,
+                    bottom: 20,
+                    child: Center(
+                      child: Stack(
+                        children: [
+                          Text(
+                            historicalEvents[selectedEventIndex],
+                            textAlign: TextAlign.center,
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                              foreground: Paint()
+                                ..style = PaintingStyle.stroke
+                                ..strokeWidth = 3
+                                ..color = Colors.black,
+                            ),
+                          ),
+                          Text(
+                            historicalEvents[selectedEventIndex],
+                            textAlign: TextAlign.center,
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Positioned(
@@ -450,6 +526,16 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
         ),
+      ),
+      floatingActionButton: Builder(
+        builder: (context) {
+          return FloatingActionButton(
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+            child: const Icon(Icons.menu),
+          );
+        },
       ),
     ); // Scaffold
   }
